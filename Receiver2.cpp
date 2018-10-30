@@ -24,7 +24,7 @@ int main() {
 	buf msg;// creates a message buffer
 	int size = sizeof(msg) - sizeof(long);//size of the msg
 
-
+    int count = 0;
 	bool send997 = true;
 	int nMessages = 0;// counts how many messages have been received
 
