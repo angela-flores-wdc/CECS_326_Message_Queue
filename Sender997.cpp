@@ -20,6 +20,7 @@ int main() {
 		long mtype;// required
 		int number;// mesg content
 	};
+	
 	buf msg;// creates a message buffer
 	int size = sizeof(msg) - sizeof(long);// get the size of the message
 

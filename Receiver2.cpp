@@ -1,3 +1,9 @@
+/*
+msgget() function that returns a message queue identifier :   int msgget(key_t key, int msgflg)
+ftok() function creates an IPC (interprocess communication) key to use as a parameter for msgget
+msgsnd()
+msgrcv()
+*/
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -20,6 +26,7 @@ int main() {
 		long mtype;// required
 		int number;// mesg content
 	};
+	
 	buf msg;// creates a message buffer
 	int size = sizeof(msg) - sizeof(long);// size of the msg
 
