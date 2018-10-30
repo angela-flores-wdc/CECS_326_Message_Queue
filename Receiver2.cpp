@@ -31,11 +31,12 @@ int main() {
 	cout << "Enter Any Single Key to Start Program " << endl;// prompts user to start the program
 	cin >> temp;// user inputs random char to continue program
 
-	for(int i = 20; i <= 23; i++){//
-		msg.number = 15;//
-		msg.mtype = i;//
-		msgsnd(qid, (struct msgbuf *)&msg, size, 0);//
-	}//Sends first message to the other programs??
+	// Sends first message to the other programs
+	for(int i = 20; i <= 23; i++){
+		msg.number = 114;
+		msg.mtype = i;// set type to each sender / receiver
+		msgsnd(qid, (struct msgbuf *)&msg, size, 0);// send message to sender / receiver
+	}
 	
 	while(nMessages <= 5000){// while Receiver2 has not received 5000 messages
 
@@ -50,8 +51,8 @@ int main() {
 			Sender997 = true;// terminate Sender997
 		}
 		else
-			msg.number = 15;//
-		msg.mtype = 20;//
+			msg.number = 114;
+		msg.mtype = 20;// Set type to Sender257
 
 		cout << "Sending Sender257 a Message" << endl;
 		msgsnd(qid, (struct msgbuf *)&msg, size, 0);
@@ -71,8 +72,8 @@ int main() {
 				if(nMessages >= 5000)// checks if Receiver2 have recieved 5000 messages
 					msg.number = 99;// used to let other programs know Receiver2 has been terminated
 				else
-					msg.number = 101;//
-				msg.mtype = 23;//
+					msg.number = 114;
+				msg.mtype = 23;// Set type to Sender997
 
 				cout << "Sending Sender997 a Message" << endl;
 				msgsnd(qid, (struct msgbuf *)&msg, size, 0);
