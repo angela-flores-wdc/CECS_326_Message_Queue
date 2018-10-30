@@ -10,7 +10,8 @@
 using namespace std;
 
 int main() {
-	cout << "Sender 251 PID Number: " << getpid() << endl;
+
+	cout << "Sender251 is Connected\tPID Number: " << getpid() << endl;// show Sender251 is running
 
 
 	int qid = msgget(ftok(".",'u'), 0);// connects to msgQ created by Receiver2
@@ -23,32 +24,29 @@ int main() {
 	buf msg;// creates a message buffer
 	int size = sizeof(msg) - sizeof(long);// get the size of the message
 
+	int randNum = rand();// generate random number
+	bool terminate = false;// checks if Sender251 has been terminated
 
-	int randNum = 251;
-	bool end = false;
-	msg.mtype = 251;			
-	msg.number = -1;
-	get_info(qid, (struct msgbuf *)&msg, size, 251);
+	get_info(qid, (struct msgbuf *)&msg, size, 251);// call function get_info
 	
-	msgrcv(qid, (struct msgbuf *)&msg, size, 22, 0);
-	int count = 0;
+	msgrcv(qid, (struct msgbuf *)&msg, size, 22, 0);// received message from Receiver2
 
-	while(!end){
+	while(terminate == false){// while Sender251 has not been terminated
 		msg.number = randNum;
 		msg.mtype = 251;
+
+		cout << "Sending Message to Receiver1" << endl;
 		msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-		cout << "Message Number: " << count << " has been sent" << endl;
-		count++;
-		msgrcv(qid, (struct msgbuf *)&msg, size, 22, 0);
-		randNum = 101;
-		while(randNum % 251 != 0){
-			randNum = rand();
+
+		msgrcv(qid, (struct msgbuf *)&msg, size, 22, 0);// sending message to Receiver1
+
+		while(randNum % 251 != 0){// while random number is not divisible by 251
+			randNum = rand();// generate new random number
 		}
 	}
 
-	cout << getpid() << " (Send251): now exits" << endl;
+	cout << "Exit Sender251" << endl;// sends message that Sender251 has been terminated  
 
-	exit(0);
+	exit(0);// exits program
 }
-
 

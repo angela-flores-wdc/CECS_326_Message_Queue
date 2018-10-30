@@ -10,9 +10,8 @@
 using namespace std;
 
 int main() {
-	srand(time(NULL));
-	cout << "Sender 997 PID Number: " << getpid() << endl;
 
+	cout << "Sender997 is Connected\tPID Number: " << getpid() << endl;// show Sender997 is running
 
 	int qid = msgget(ftok(".",'u'), 0);// connects to msgQ created by Receiver2
 
@@ -24,57 +23,51 @@ int main() {
 	buf msg;// creates a message buffer
 	int size = sizeof(msg) - sizeof(long);// get the size of the message
 
+	bool terminate = false;// keeps track if Sender997 has been terminated
+	bool Receiver1 = false;// checks if Receiver1 has been terminated
+	bool Receiver2 = false;// checks if Receiver2 has been terminated
 
-	int count = 0;
-	int randNum = 997;
-	bool end = false;
-	bool over = false;
-	bool rec1 = true;
-	bool rec2 = true;
-	msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);
-	while(!over){
-		if(end)
-			over = true;
-		if(rec2){
-			if(end)
+	msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);// received message from Receiver2
+
+	while(terminate == false){// while Sender997 has not been terminated
+		int randNum = rand();// generate random number
+		while(randNum % 997 != 0){// while random number is not divisible by 997
+			randNum = rand();// generate new random number
+			if(randNum < 100){// if random number is smaller than 100
+				terminate = true;// terminate Sender 997
+				cout << "Sending Last Message to Receivers, Then Terminating Sender997" << endl;
+			}
+		}
+		if(Receiver2 == false){// if Receiver2 has not been terminated
+			if(terminate == true)//if Sender997 is going to terminate
 				msg.number = 99;
 			else
 				msg.number = randNum;	
 			msg.mtype = 997;
+
+			cout << "Sending Receiver2 a Message" << endl;
 			msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-			count++;
-			cout << "Rec2 Message Number: " << count << " has been sent" << endl;
-			if(!end){
-				msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);
-				if(msg.number == 99){
-					rec2 = false;
-					cout << "Receiver2 is ending~~~~~~~~~~~~" << endl;
-				}
+
+			if(terminate == false){// if Sender997 has not been terminated
+				msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);// received message from Receiver2
 			}
 		}
-		if(rec1){
-			if(end)
+		if(Receiver1 == false){// if Receiver1 has not been terminated
+			if(terminate == true)// if Sender997 is going to terminate
 				msg.number = 99;
 			else
 				msg.number = randNum;	
-			msg.mtype = 998;
+			msg.mtype = 997;
+
+			cout << "Sending Receiver1 a Message" << endl;
 			msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-			count++;
-			cout << "Rec1 Message Number: " << count << " has been sent" << endl;
-			if(!end)
-				msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);
-		}
-		randNum = 101;
-		while(randNum % 997 != 0){
-			randNum = rand();
-			if(randNum < 100){
-				end = true;
-				cout << "Sender997 is done, sending final message" << endl;
-			}
+
+			if(terminate == false)// if Sender997 has not been terminated
+				msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);// received message from Receiver1
 		}
 	}
 	
-	cout << getpid() << ": now exits" << endl;
+	cout << "Exit Sender997" << endl;// sends message that Sender997 has been terminated
 
-	exit(0);
+	exit(0);// exits program
 }
