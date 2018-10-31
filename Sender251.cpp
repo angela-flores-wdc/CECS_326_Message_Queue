@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
 
-	cout << "Sender251 is Connected\tPID Number: " << getpid() << endl;// show Sender251 is running
+	cout << "Sender251 is Connected\tPID Number: " << getpid() << endl;// show Sender251 is running and display process PID  
 
 
 	int qid = msgget(ftok(".",'u'), 0);// connects to msgQ created by Receiver2
