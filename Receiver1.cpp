@@ -36,18 +36,23 @@ int main() {
 				termSend251 = true;
 			}
 			else{
-				msg.mtype = 22;
+				msg.mtype = 22;// set type to Sender251
+
+				cout << "Sending Sender251 a Message" << endl;
 				msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 			}
 		}
-		if(termSend997 == false){// if Sender997 has not been terminated
-			msgrcv(qid, (struct msgbuf *)&msg, size, 998, 0);
-			cout << "Message From " << msg.mtype << " : " << msg.number << endl;
+		if(Sender997 == false){// if Sender997 has not been terminated
+			msgrcv(qid, (struct msgbuf *)&msg, size, 997, 0);// receives message from Sender997
+			cout << "Sender's Identity: " << msg.mtype << "\tSender's Value: " << msg.number << endl;// display sender's identity and value
 			if(msg.number == 99){
-				termSend997 = true;
+				Sender997 = true;// Sender997 has been terminated
 			}
 			else{
-				msg.mtype = 23;
+				msg.mtype = 23;// set type to Sender997
+
+				cout << "Sending Sender997 a Message" << endl;
+
 				msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 			}
 		}	

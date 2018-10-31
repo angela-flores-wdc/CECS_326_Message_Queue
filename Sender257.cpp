@@ -23,21 +23,23 @@ int main() {
 	buf msg;// creates a message buffer
 	int size = sizeof(msg) - sizeof(long);// get the size of the message
 
-	int randNum = rand();// generate random number
 	bool terminate = false;// checks if Sender257 has been terminated
 
 	msgrcv(qid, (struct msgbuf *)&msg, size, 20, 0);// received message from Receiver2
 
 	while(terminate == false){// while Sender257 has not been terminated
+		
+		int randNum = 114;
+		while(randNum % 257 != 0){// while random number is not divisible by 257
+			randNum = rand();// generate new random number
+		}
+
 		msg.number = randNum;	
 		msg.mtype = 257;
 		
 		cout << "Sending Message To Receiver2" << endl;
 		msgsnd(qid, (struct msgbuf *)&msg, size, 0);
 
-		while(randNum % 257 != 0){// while random number is not divisible by 257
-			randNum = rand();// generate new random number
-		}
 		msgrcv(qid, (struct msgbuf *)&msg, size, 20, 0);// received message from Receiver2
 		if(msg.number == 99)// msg.number == 99 when Receiver2 has been terminated
 			terminate = true;// terminate Sender257	

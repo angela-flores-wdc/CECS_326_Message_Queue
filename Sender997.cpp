@@ -31,7 +31,8 @@ int main() {
 	msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);// received message from Receiver2
 
 	while(terminate == false){// while Sender997 has not been terminated
-		int randNum = rand();// generate random number
+
+		int randNum = 114;
 		while(randNum % 997 != 0){// while random number is not divisible by 997
 			randNum = rand();// generate new random number
 			if(randNum < 100){// if random number is smaller than 100
@@ -39,6 +40,7 @@ int main() {
 				cout << "Sending Last Message to Receivers, Then Terminating Sender997" << endl;
 			}
 		}
+
 		if(Receiver2 == false){// if Receiver2 has not been terminated
 			if(terminate == true)//if Sender997 is going to terminate
 				msg.number = 99;
@@ -53,6 +55,7 @@ int main() {
 				msgrcv(qid, (struct msgbuf *)&msg, size, 23, 0);// received message from Receiver2
 			}
 		}
+
 		if(Receiver1 == false){// if Receiver1 has not been terminated
 			if(terminate == true)// if Sender997 is going to terminate
 				msg.number = 99;
